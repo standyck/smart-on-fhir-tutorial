@@ -42,6 +42,13 @@
                     p.lname = lname;
                     p.age = parseInt(calculateAge(dob));
 
+                    var drs = [];
+
+                    dr.forEach(function(dreport) {
+                        drs.push(processRawDR(dreport));
+                    });
+
+                    p.diagnoticreports = drs;
                     ret.resolve(p);
                 });
             } else {
@@ -61,12 +68,18 @@
             gender: {value: ''},
             birthdate: {value: ''},
             age: {value: ''},
-            height: {value: ''},
-            systolicbp: {value: ''},
-            diastolicbp: {value: ''},
-            ldl: {value: ''},
-            hdl: {value: ''}
+            diagnoticreports : {value: ''}
         };
+    }
+
+    function processRawDR(DReport) {
+        var rtn = {};
+        rtn['id'] = DReport.id;
+        rtn['status'] = DReport.status;
+        rtn['category'] = DReport.category.text;
+        rtn['effectiveDateTime'] = DReport.effectiveDateTime;
+        rtn['text'] = DReport.text;
+        return rtn;
     }
 
     function getBloodPressureValue(BPObservations, typeOfPressure) {
