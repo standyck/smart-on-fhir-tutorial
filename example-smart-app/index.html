@@ -6,6 +6,7 @@
     <title>standyckExample-SMART-App</title>
 
     <link rel='stylesheet' type='text/css' href='./src/css/example-smart-app.css'>
+    <link rel='stylesheet' type='text/css' href='./src/css/my.css'>
   </head>
   <body>
     <div id='errors'>
@@ -18,53 +19,26 @@
     <div id='holder' >
       <h2>Example-SMART-App</h2>
 
-      <h2>Patient Resource</h2>
-      <table>
-        <tr>
-          <th>First Name:</th>
-          <td id='fname'></td>
-        </tr>
-        <tr>
-          <th>Last Name:</th>
-          <td id='lname'></td>
-        </tr>
-        <tr>
-          <th>Gender:</th>
-          <td id='gender'></td>
-        </tr>
-        <tr>
-          <th>Date of Birth:</th>
-          <td id='birthdate'></td>
-        </tr>
-        <tr>
-          <th>Age:</th>
-          <td id='age'></td>
-        </tr>
-      </table>
-      <h2>Observation Resource</h2>
-      <table>
-        <tr>
-          <th>Height:</th>
-          <td id='height'></td>
-        </tr>
-        <tr>
-          <th>Systolic Blood Pressure:</th>
-          <td id='systolicbp'></td>
+      <h3>Patient Resource</h3>
+      <dl>
+          <dt>First Name:</dt>
+          <dd id='fname'></dd>
 
-        </tr>
-        <tr>
-          <th>Diastolic Blood Pressure:</th>
-          <td id='diastolicbp'></td>
-        </tr>
-        <tr>
-          <th>LDL:</th>
-          <td id='ldl'></td>
-        </tr>
-        <tr>
-          <th>HDL:</th>
-          <td id='hdl'></td>
-        </tr>
-      </table>
+          <dt>Last Name:</dt>
+          <dd id='lname'></dd>
+
+          <dt>Gender:</dt>
+          <dd id='gender'></dd>
+
+          <dt>Date of Birth:</dt>
+          <dd id='birthdate'></dd>
+
+          <dt>Age:</dt>
+          <dd id='age'></dd>
+      </dl>
+
+      <h3>Diagnostic Reports</h3>
+      <p>TBD</p>
     </div>
     <script src='./lib/es6-shim-0.35.1.min.js'></script>
     <script type='text/javascript' src='./src/js/example-smart-app.js'></script>
