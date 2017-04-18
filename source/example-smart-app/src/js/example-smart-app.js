@@ -26,9 +26,10 @@
                     type: 'DiagnosticReport'
                 });
 
-                $.when(pt, obv).fail(onError);
+                $.when(pt, obv, dr).fail(onError);
 
-                $.when(pt, obv).done(function(patient, obv) {
+                $.when(pt, obv, dr).done(function(patient, obv, dr) {
+                    console.log('dr=' + dr);
                     var byCodes = smart.byCodes(obv, 'code');
                     var gender = patient.gender;
                     var dob = new Date(patient.birthDate);
