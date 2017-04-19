@@ -111,7 +111,8 @@
         $('#gender').html(p.gender);
         $('#birthdate').html(p.birthdate);
         $('#age').html(p.age);
-        var drHtml = render(p.diagnoticreports, []);
+        var test = {'k' : 'hello'};
+        var drHtml = render(test, []);
         $('#drs').html(drHtml.join(""));
     };
 
@@ -122,7 +123,8 @@
             for(var k in thing) {
                 rtnO.push('<dt>' + k + '<dt>');
                 rtnO.push('<dd>');
-                rtnO.concat(myself(thing[k], acc));
+                var rt = myself(thing[k], acc);
+                rtnO.concat(rt);
                 rtnO.push('</dd>');
             }
             rtnO.push('</dl>');
@@ -138,8 +140,7 @@
             rtnA.push('</ol>');
             return acc.concat(rtnA);
         } else {
-            acc.concat(thing);
-            return acc;
+            return [thing];
         }
     };
 
