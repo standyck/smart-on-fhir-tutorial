@@ -111,11 +111,35 @@
         $('#gender').html(p.gender);
         $('#birthdate').html(p.birthdate);
         $('#age').html(p.age);
-        var drHtml = [];
-        $.each(p.diagnoticreports, function(idx, dr) {
-            drHtml.push('<dl><dt>id</dt><dd>' + dr.id + '</dd></dl>');
-        });
+        var drHtml = render(dr);
         $('#drs').html(drHtml.join(""));
+    };
+
+    function render(thing) {
+        var rtn = [];
+        if($.isPlainObject(thing)) {
+            rtn.push('<dl>');
+            for(var k in thing) {
+                rtn.push('<dt>' + k + '<dt>');
+                rtn.push('<dd>');
+                rtn.concat(render(thing[k]));
+                rtn.push('</dd>');
+            }
+            rtn.push('</dl>');
+            return rtn;
+        } else if ($.isArray(thing)) {
+            rtn.push('<ol>');
+            thing.forEach(function(e) {
+                rtn.push('<li>');
+                rtn.concat(render(e));
+                rtn.push('</li>');
+            });
+            rtn.push('</ol>');
+            return rtn;
+        } else {
+            rtn.push(thing);
+            return rtn;
+        }
     };
 
 })(window);
