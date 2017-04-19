@@ -137,7 +137,8 @@
             acc.push('</ol>');
             return acc;
         } else {
-            return acc.push(thing);
+            acc.push(thing);
+            return acc;
         }
     };
 
