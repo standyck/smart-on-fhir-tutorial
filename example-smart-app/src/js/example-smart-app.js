@@ -115,7 +115,7 @@
         $.each(p.drs, function(idx, dr) {
             drHtml.push('<dl><dt>id</dt><dd>' + dr.id + '</dd></dl>');
         });
-        $('#drs').html(drHtml.join("");
+        $('#drs').html(drHtml.join(""));
     };
 
 })(window);
