@@ -111,7 +111,7 @@
         $('#gender').html(p.gender);
         $('#birthdate').html(p.birthdate);
         $('#age').html(p.age);
-        var drHtml = render(p.diagnoticreports);
+        var drHtml = render(p.diagnoticreports, []);
         $('#drs').html(drHtml.join(""));
     };
 
