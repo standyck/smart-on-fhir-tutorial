@@ -113,7 +113,7 @@
         $('#age').html(p.age);
         var drHtml = [];
         $.each(p.drs, function(idx, dr) {
-            drHtml.push('<dt>id</dt><dd>' + dr.id + '</dd>');
+            drHtml.push('<dl><dt>id</dt><dd>' + dr.id + '</dd></dl>');
         });
         $('#drs').html(drHtml.join("");
     };
