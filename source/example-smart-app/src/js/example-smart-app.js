@@ -82,23 +82,6 @@
         return rtn;
     }
 
-    function getBloodPressureValue(BPObservations, typeOfPressure) {
-        var formattedBPObservations = [];
-        BPObservations.forEach(function(observation){
-            var BP = observation.component.find(function(component){
-                return component.code.coding.find(function(coding) {
-                    return coding.code == typeOfPressure;
-                });
-            });
-            if (BP) {
-                observation.valueQuantity = BP.valueQuantity;
-                formattedBPObservations.push(observation);
-            }
-        });
-
-        return getQuantityValueAndUnit(formattedBPObservations[0]);
-    }
-
     function isLeapYear(year) {
         return new Date(year, 1, 29).getMonth() === 1;
     }
@@ -120,17 +103,6 @@
         }
     }
 
-    function getQuantityValueAndUnit(ob) {
-        if (typeof ob != 'undefined' &&
-            typeof ob.valueQuantity != 'undefined' &&
-            typeof ob.valueQuantity.value != 'undefined' &&
-            typeof ob.valueQuantity.unit != 'undefined') {
-            return ob.valueQuantity.value + ' ' + ob.valueQuantity.unit;
-        } else {
-            return undefined;
-        }
-    }
-
     window.drawVisualization = function(p) {
         $('#holder').show();
         $('#loading').hide();
@@ -139,11 +111,11 @@
         $('#gender').html(p.gender);
         $('#birthdate').html(p.birthdate);
         $('#age').html(p.age);
-        $('#height').html(p.height);
-        $('#systolicbp').html(p.systolicbp);
-        $('#diastolicbp').html(p.diastolicbp);
-        $('#ldl').html(p.ldl);
-        $('#hdl').html(p.hdl);
+        var drHtml = [];
+        $.each(p.drs, function(idx, dr) {
+            drHtml.push('<dt>id</dt><dd>' + dr.id + '</dd>');
+        });
+        $('#drs').html(drHtml.join("");
     };
 
 })(window);
