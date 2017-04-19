@@ -118,29 +118,26 @@
 
     var render = function  myself(thing, acc) {
         if($.isPlainObject(thing)) {
-            var rtnO = [];
-            rtnO.push('<dl>');
+            acc.push('<dl>');
             for(var k in thing) {
-                rtnO.push('<dt>' + k + '<dt>');
-                rtnO.push('<dd>');
-                var rt = myself(thing[k], acc);
-                rtnO.concat(rt);
-                rtnO.push('</dd>');
+                acc.push('<dt>' + k + '<dt>');
+                acc.push('<dd>');
+                acc = myself(thing[k], acc);
+                acc.push('</dd>');
             }
-            rtnO.push('</dl>');
-            return acc.concat(rtnO);
+            acc.push('</dl>');
+            return acc;
         } else if ($.isArray(thing)) {
-            var rtnA = [];
-            rtnA.push('<ol>');
+            acc.push('<ol>');
             thing.forEach(function(e) {
-                rtnA.push('<li>');
-                rtnA.concat(myself(e, acc));
-                rtnA.push('</li>');
+                acc.push('<li>');
+                acc = myself(e, acc);
+                acc.push('</li>');
             });
-            rtnA.push('</ol>');
-            return acc.concat(rtnA);
+            acc.push('</ol>');
+            return acc;
         } else {
-            return [thing];
+            return acc.push(thing);
         }
     };
 
