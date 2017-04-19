@@ -48,7 +48,7 @@
                         drs.push(processRawDR(dreport));
                     });
 
-                    p.diagnoticreports = drs;
+                    p.diagnoticreports = dr;
                     ret.resolve(p);
                 });
             } else {
