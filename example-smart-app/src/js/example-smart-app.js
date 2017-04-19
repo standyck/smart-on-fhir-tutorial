@@ -115,27 +115,28 @@
         $('#drs').html(drHtml.join(""));
     };
 
-    function render(thing, acc) {
-        var rtn = [];
+    var render = function  myself(thing, acc) {
         if($.isPlainObject(thing)) {
-            rtn.push('<dl>');
+            var rtnO = [];
+            rtnO.push('<dl>');
             for(var k in thing) {
-                rtn.push('<dt>' + k + '<dt>');
-                rtn.push('<dd>');
-                rtn.concat(render(thing[k], acc));
-                rtn.push('</dd>');
+                rtnO.push('<dt>' + k + '<dt>');
+                rtnO.push('<dd>');
+                rtnO.concat(myself(thing[k], acc));
+                rtnO.push('</dd>');
             }
-            rtn.push('</dl>');
-            return acc.concat(rtn);
+            rtnO.push('</dl>');
+            return acc.concat(rtnO);
         } else if ($.isArray(thing)) {
-            rtn.push('<ol>');
+            var rtnA = [];
+            rtnA.push('<ol>');
             thing.forEach(function(e) {
-                rtn.push('<li>');
-                rtn.concat(render(e), acc);
-                rtn.push('</li>');
+                rtnA.push('<li>');
+                rtnA.concat(myself(e, acc));
+                rtnA.push('</li>');
             });
-            rtn.push('</ol>');
-            return acc.concat(rtn);
+            rtnA.push('</ol>');
+            return acc.concat(rtnA);
         } else {
             acc.concat(thing);
             return acc;
