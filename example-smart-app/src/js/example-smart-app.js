@@ -111,7 +111,7 @@
         $('#gender').html(p.gender);
         $('#birthdate').html(p.birthdate);
         $('#age').html(p.age);
-        var test = {'k' : 'hello', 'k2': 'goodbye'};
+        var test = {'k' : 'hello', 'k2': [1, 'this']};
         var drHtml = render(test, []);
         $('#drs').html(drHtml.join(""));
     };
@@ -120,7 +120,7 @@
         if($.isPlainObject(thing)) {
             acc.push('<dl>');
             for(var k in thing) {
-                acc.push('<dt>' + k + '<dt>');
+                acc.push('<dt>' + k + '</dt>');
                 acc.push('<dd>');
                 acc = myself(thing[k], acc);
                 acc.push('</dd>');
