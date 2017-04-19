@@ -115,30 +115,30 @@
         $('#drs').html(drHtml.join(""));
     };
 
-    function render(thing) {
+    function render(thing, acc) {
         var rtn = [];
         if($.isPlainObject(thing)) {
             rtn.push('<dl>');
             for(var k in thing) {
                 rtn.push('<dt>' + k + '<dt>');
                 rtn.push('<dd>');
-                rtn.concat(render(thing[k]));
+                rtn.concat(render(thing[k], acc));
                 rtn.push('</dd>');
             }
             rtn.push('</dl>');
-            return rtn;
+            return acc.concat(rtn);
         } else if ($.isArray(thing)) {
             rtn.push('<ol>');
             thing.forEach(function(e) {
                 rtn.push('<li>');
-                rtn.concat(render(e));
+                rtn.concat(render(e), acc);
                 rtn.push('</li>');
             });
             rtn.push('</ol>');
-            return rtn;
+            return acc.concat(rtn);
         } else {
-            rtn.push(thing);
-            return rtn;
+            acc.concat(thing);
+            return acc;
         }
     };
 
