@@ -111,7 +111,7 @@
         $('#gender').html(p.gender);
         $('#birthdate').html(p.birthdate);
         $('#age').html(p.age);
-        var test = {'k' : 'hello'};
+        var test = {'k' : 'hello', 'k2': 'goodbye'};
         var drHtml = render(test, []);
         $('#drs').html(drHtml.join(""));
     };
