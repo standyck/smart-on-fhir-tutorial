@@ -41,13 +41,6 @@
                     p.fname = fname;
                     p.lname = lname;
                     p.age = parseInt(calculateAge(dob));
-
-                    var drs = [];
-
-                    dr.forEach(function(dreport) {
-                        drs.push(processRawDR(dreport));
-                    });
-
                     p.diagnoticreports = dr;
                     ret.resolve(p);
                 });
@@ -70,16 +63,6 @@
             age: {value: ''},
             diagnoticreports : {value: ''}
         };
-    }
-
-    function processRawDR(DReport) {
-        var rtn = {};
-        rtn['id'] = DReport.id;
-        rtn['status'] = DReport.status;
-        rtn['category'] = DReport.category.text;
-        rtn['effectiveDateTime'] = DReport.effectiveDateTime;
-        rtn['text'] = DReport.text;
-        return rtn;
     }
 
     function isLeapYear(year) {
