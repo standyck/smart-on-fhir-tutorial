@@ -11,26 +11,14 @@
             if (smart.hasOwnProperty('patient')) {
                 var patient = smart.patient;
                 var pt = patient.read();
-                var obv = smart.patient.api.fetchAll({
-                    type: 'Observation',
-                    query: {
-                        code: {
-                            $or: ['http://loinc.org|8302-2', 'http://loinc.org|8462-4',
-                                  'http://loinc.org|8480-6', 'http://loinc.org|2085-9',
-                                  'http://loinc.org|2089-1', 'http://loinc.org|55284-4']
-                        }
-                    }
-                });
-
                 var dr = smart.patient.api.fetchAll({
                     type: 'DiagnosticReport'
                 });
 
-                $.when(pt, obv, dr).fail(onError);
+                $.when(pt, dr).fail(onError);
 
-                $.when(pt, obv, dr).done(function(patient, obv, dr) {
+                $.when(pt, dr).done(function(patient, dr) {
                     console.log('dr=' + dr);
-                    var byCodes = smart.byCodes(obv, 'code');
                     var gender = patient.gender;
                     var dob = new Date(patient.birthDate);
                     var day = dob.getDate();
@@ -46,11 +34,6 @@
                         lname = patient.name[0].family.join(' ');
                     }
 
-                    var height = byCodes('8302-2');
-                    var systolicbp = getBloodPressureValue(byCodes('55284-4'),'8480-6');
-                    var diastolicbp = getBloodPressureValue(byCodes('55284-4'),'8462-4');
-                    var hdl = byCodes('2085-9');
-                    var ldl = byCodes('2089-1');
 
                     var p = defaultPatient();
                     p.birthdate = dobStr;
@@ -58,19 +41,7 @@
                     p.fname = fname;
                     p.lname = lname;
                     p.age = parseInt(calculateAge(dob));
-                    p.height = getQuantityValueAndUnit(height[0]);
-
-                    if (typeof systolicbp != 'undefined')  {
-                        p.systolicbp = systolicbp;
-                    }
-
-                    if (typeof diastolicbp != 'undefined') {
-                        p.diastolicbp = diastolicbp;
-                    }
-
-                    p.hdl = getQuantityValueAndUnit(hdl[0]);
-                    p.ldl = getQuantityValueAndUnit(ldl[0]);
-
+                    p.diagnoticreports = dr;
                     ret.resolve(p);
                 });
             } else {
@@ -90,29 +61,8 @@
             gender: {value: ''},
             birthdate: {value: ''},
             age: {value: ''},
-            height: {value: ''},
-            systolicbp: {value: ''},
-            diastolicbp: {value: ''},
-            ldl: {value: ''},
-            hdl: {value: ''}
+            diagnoticreports : {value: ''}
         };
-    }
-
-    function getBloodPressureValue(BPObservations, typeOfPressure) {
-        var formattedBPObservations = [];
-        BPObservations.forEach(function(observation){
-            var BP = observation.component.find(function(component){
-                return component.code.coding.find(function(coding) {
-                    return coding.code == typeOfPressure;
-                });
-            });
-            if (BP) {
-                observation.valueQuantity = BP.valueQuantity;
-                formattedBPObservations.push(observation);
-            }
-        });
-
-        return getQuantityValueAndUnit(formattedBPObservations[0]);
     }
 
     function isLeapYear(year) {
@@ -136,17 +86,6 @@
         }
     }
 
-    function getQuantityValueAndUnit(ob) {
-        if (typeof ob != 'undefined' &&
-            typeof ob.valueQuantity != 'undefined' &&
-            typeof ob.valueQuantity.value != 'undefined' &&
-            typeof ob.valueQuantity.unit != 'undefined') {
-            return ob.valueQuantity.value + ' ' + ob.valueQuantity.unit;
-        } else {
-            return undefined;
-        }
-    }
-
     window.drawVisualization = function(p) {
         $('#holder').show();
         $('#loading').hide();
@@ -155,11 +94,34 @@
         $('#gender').html(p.gender);
         $('#birthdate').html(p.birthdate);
         $('#age').html(p.age);
-        $('#height').html(p.height);
-        $('#systolicbp').html(p.systolicbp);
-        $('#diastolicbp').html(p.diastolicbp);
-        $('#ldl').html(p.ldl);
-        $('#hdl').html(p.hdl);
+        var drHtml = render(p.diagnoticreports, []);
+        $('#drs').html(drHtml.join(""));
+    };
+
+    var render = function  myself(thing, acc) {
+        if($.isPlainObject(thing)) {
+            acc.push('<dl>');
+            for(var k in thing) {
+                acc.push('<dt>' + k + '</dt>');
+                acc.push('<dd>');
+                acc = myself(thing[k], acc);
+                acc.push('</dd>');
+            }
+            acc.push('</dl>');
+            return acc;
+        } else if ($.isArray(thing)) {
+            acc.push('<ol>');
+            thing.forEach(function(e) {
+                acc.push('<li>');
+                acc = myself(e, acc);
+                acc.push('</li>');
+            });
+            acc.push('</ol>');
+            return acc;
+        } else {
+            acc.push(thing);
+            return acc;
+        }
     };
 
 })(window);
